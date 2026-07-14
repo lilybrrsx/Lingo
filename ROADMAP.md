@@ -65,12 +65,18 @@ completo para usar, em vez de um app largo e raso.
 
 Construir os motores de exercício **e** o conteúdo A1 de cada habilidade:
 
+- ✅ 🗣️ **Falar** — a pessoa fala no microfone e o app confere a pronúncia
+  (reconhecimento de voz do navegador, grátis no Chrome; aceita diferenças de
+  acento/pontuação e avisa quando ficou "quase"). Alimenta a revisão espaçada.
 - ⏳ 📚 **Vocabulário** — ampliar A1 para ~500 palavras _(hoje: 50)_
 - ⏳ 📐 **Gramática** — lições A1 (artigos, presente) + exercício de lacuna
 - ⏳ 👂 **Ouvir** — ditado: ouço o áudio e escrevo o que entendi
-- ⏳ 🗣️ **Falar** — reconhecimento de voz do navegador: a pessoa fala, o app confere _(grátis no Chrome)_
 - ⏳ 📖 **Ler** — frases e textinhos A1 + perguntas de compreensão
 - ⏳ ✍️ **Escrever** — escrever a palavra/frase ouvida ou traduzida
+
+> ⚠️ A prática de fala precisa de **https** (ou localhost) — o navegador
+> bloqueia o microfone em arquivos abertos direto do PC (`file://`).
+> Publicado no GitHub Pages, funciona normalmente.
 
 ## ⏳ Fase 3 — A2 completo
 

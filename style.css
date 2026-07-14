@@ -225,6 +225,38 @@ main {
 .btn-bom   { background: var(--verde); }
 .btn-facil { background: var(--azul); }
 
+/* ===== Prática de fala ===== */
+.btn-microfone { background: var(--vermelho); }
+
+.ouvindo {
+  color: var(--vermelho);
+  font-weight: 800;
+  animation: pulsar 1s ease-in-out infinite;
+}
+@keyframes pulsar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.fala-ok    { color: var(--verde);    font-weight: 800; font-size: 1.2rem; }
+.fala-quase { color: #d89100;         font-weight: 800; font-size: 1.2rem; }
+.fala-erro  { color: var(--vermelho); font-weight: 700; }
+.fala-ouvido {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Caixa de aviso */
+.aviso {
+  background: #fff8e8;
+  border: 1px solid var(--amarelo);
+  border-radius: 14px;
+  padding: 18px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
 /* ===== Rodapé ===== */
 .rodape {
   text-align: center;

@@ -180,7 +180,44 @@ function telaCategorias() {
     el.onclick = () => { estado.nivel = el.dataset.nivel; telaCategorias(); };
   });
   app.querySelectorAll("[data-cat]").forEach(el => {
-    el.onclick = () => { estado.categoria = el.dataset.cat; telaEstudo(); };
+    el.onclick = () => { estado.categoria = el.dataset.cat; telaModos(); };
+  });
+}
+
+/* Tela 3b: como praticar este tema (uma habilidade por cartão).
+   É aqui que as próximas habilidades vão entrar: ditado, ler, escrever. */
+function telaModos() {
+  estado.tela = "modos";
+  btnVoltar.hidden = false;
+  const t = (CATALOGO[estado.idioma] || []).find(x => x.cat === estado.categoria);
+  app.innerHTML = `
+    <h2 class="titulo-tela">${t ? t.emoji : "📚"} ${estado.categoria}</h2>
+    <p class="subtitulo">Como você quer praticar?</p>
+    <div class="grade">
+      <div class="cartao-opcao" data-modo="cartoes">
+        <span class="emoji">📚</span>
+        <div class="nome">Cartões</div>
+        <div class="info">Aprender as palavras</div>
+      </div>
+      <div class="cartao-opcao" data-modo="falar">
+        <span class="emoji">🗣️</span>
+        <div class="nome">Falar</div>
+        <div class="info">Praticar a pronúncia</div>
+      </div>
+      <div class="cartao-opcao" data-modo="quiz">
+        <span class="emoji">🧠</span>
+        <div class="nome">Quiz</div>
+        <div class="info">Testar o que sabe</div>
+      </div>
+    </div>
+  `;
+  app.querySelectorAll("[data-modo]").forEach(el => {
+    el.onclick = () => {
+      const m = el.dataset.modo;
+      if (m === "cartoes") telaEstudo();
+      else if (m === "falar") telaFala();
+      else telaQuiz();
+    };
   });
 }
 
@@ -259,14 +296,151 @@ function telaFim() {
       <div class="emoji-grande">🎉</div>
       <h2 class="titulo-tela">Muito bem, ${estado.perfil.nome}!</h2>
       <p class="subtitulo">Você terminou o tema "${estado.categoria}". As palavras entraram na sua revisão. 🔁</p>
+      <button class="btn btn-primario btn-microfone" id="btnFalarAgora">Praticar falando 🗣️</button>
       <button class="btn btn-primario" id="btnQuiz">Fazer o quiz deste tema 🧠</button>
       <button class="btn btn-primario" id="btnDeNovo" style="background:var(--verde)">Estudar de novo 🔁</button>
       <button class="btn btn-primario" id="btnOutro" style="background:var(--amarelo)">Escolher outro tema</button>
     </div>
   `;
+  document.getElementById("btnFalarAgora").onclick = telaFala;
   document.getElementById("btnQuiz").onclick = telaQuiz;
   document.getElementById("btnDeNovo").onclick = telaEstudo;
   document.getElementById("btnOutro").onclick = telaCategorias;
+}
+
+/* ============================================================
+   FALAR — a pessoa fala no microfone e o app confere
+   ============================================================ */
+function telaFala() {
+  estado.tela = "fala";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria, iniciarFala, mostrarErroCarregar);
+}
+
+/* Aviso quando o microfone não pode funcionar */
+function telaFalaIndisponivel(motivo) {
+  estado.tela = "fala";
+  const texto = motivo === "sem-suporte"
+    ? `Seu navegador não tem reconhecimento de voz. Use o <strong>Google Chrome</strong> para praticar a fala.`
+    : `O microfone só funciona em conexão segura (<strong>https</strong>).<br><br>
+       Como você abriu o arquivo direto do computador, o navegador bloqueia o microfone.
+       Publique o app no GitHub Pages e abra pelo link <strong>https://</strong> — aí a fala funciona. 😊`;
+  app.innerHTML = `
+    <div class="aviso">🎤 <strong>Prática de fala indisponível aqui</strong><br><br>${texto}</div>
+    <button class="btn btn-primario" id="btnVoltarModos">Voltar</button>
+  `;
+  document.getElementById("btnVoltarModos").onclick = telaModos;
+}
+
+function iniciarFala(palavrasOriginais) {
+  if (!Lingo.Fala.disponivel()) { telaFalaIndisponivel("sem-suporte"); return; }
+  if (!Lingo.Fala.contextoSeguro()) { telaFalaIndisponivel("inseguro"); return; }
+
+  const code = IDIOMAS[estado.idioma].code;
+  const palavras = embaralhar(palavrasOriginais);
+  let indice = 0;
+  let fase = "pronto";        // pronto | ouvindo | resultado
+  let resultado = null;       // { acertou, quase, ouvido } ou { erroMsg }
+  let melhorAcerto = false;   // melhor tentativa desta palavra
+  let acertos = 0;
+
+  function desenhar() {
+    const atual = palavras[indice];
+    const progresso = Math.round((indice / palavras.length) * 100);
+    app.innerHTML = `
+      <div class="barra-progresso"><div style="width:${progresso}%"></div></div>
+      <p class="subtitulo">🗣️ Falar • ${indice + 1} de ${palavras.length}</p>
+      <div class="flashcard">
+        <div class="dica">${atual.pt}</div>
+        <div class="palavra">${atual.tr}</div>
+        <button class="btn-audio" id="btnOuvir" title="Ouvir a pronúncia">🔊</button>
+        ${fase === "ouvindo" ? `<div class="ouvindo">🔴 Ouvindo... fale agora!</div>` : ""}
+        ${fase === "resultado" ? blocoResultado() : ""}
+      </div>
+      ${blocoBotoes()}
+    `;
+    document.getElementById("btnOuvir").onclick = () => falar(atual.tr, code);
+
+    if (fase === "pronto") {
+      document.getElementById("btnFalar").onclick = comecarAOuvir;
+    }
+    if (fase === "resultado") {
+      document.getElementById("btnTentar").onclick = () => { fase = "pronto"; resultado = null; desenhar(); };
+      document.getElementById("btnProxima").onclick = proxima;
+    }
+  }
+
+  function blocoResultado() {
+    if (resultado.erroMsg) return `<div class="fala-erro">😕 ${resultado.erroMsg}</div>`;
+    if (resultado.acertou) return `<div class="fala-ok">✅ Perfeito!</div>`;
+    if (resultado.quase) return `
+      <div class="fala-quase">🤏 Quase!</div>
+      <div class="fala-ouvido">Eu ouvi: "${resultado.ouvido}"</div>`;
+    return `
+      <div class="fala-erro">❌ Não foi dessa vez</div>
+      <div class="fala-ouvido">Eu ouvi: "${resultado.ouvido}"</div>`;
+  }
+
+  function blocoBotoes() {
+    if (fase === "pronto") return `<button class="btn btn-primario btn-microfone" id="btnFalar">🎤 Falar</button>`;
+    if (fase === "ouvindo") return `<button class="btn btn-primario" disabled>Ouvindo...</button>`;
+    return `
+      <div class="acoes">
+        <button class="btn btn-rever" id="btnTentar">Tentar de novo</button>
+        <button class="btn btn-sabia" id="btnProxima">Próxima →</button>
+      </div>`;
+  }
+
+  function comecarAOuvir() {
+    fase = "ouvindo";
+    desenhar();
+    const atual = palavras[indice];
+    Lingo.Fala.ouvir(code,
+      (alternativas) => {
+        resultado = Lingo.Fala.avaliar(atual.tr, alternativas);
+        if (resultado.acertou) melhorAcerto = true;
+        fase = "resultado";
+        desenhar();
+      },
+      (erro) => {
+        resultado = { erroMsg: Lingo.Fala.mensagemErro(erro) };
+        fase = "resultado";
+        desenhar();
+      }
+    );
+  }
+
+  function proxima() {
+    // a fala também alimenta a revisão espaçada
+    SRS.responder(estado.perfil.id, estado.idioma, estado.categoria, palavras[indice], melhorAcerto ? "bom" : "errei");
+    if (melhorAcerto) acertos++;
+    indice++;
+    fase = "pronto";
+    resultado = null;
+    melhorAcerto = false;
+    if (indice >= palavras.length) telaFalaFim(acertos, palavras.length);
+    else desenhar();
+  }
+
+  desenhar();
+}
+
+function telaFalaFim(acertos, total) {
+  estado.tela = "falaFim";
+  const nota = Math.round((acertos / total) * 100);
+  const emoji = nota >= 80 ? "🎤" : nota >= 50 ? "👍" : "💪";
+  app.innerHTML = `
+    <div class="parabens">
+      <div class="emoji-grande">${emoji}</div>
+      <h2 class="titulo-tela">Você pronunciou ${acertos} de ${total}!</h2>
+      <p class="subtitulo">Falar em voz alta é o que mais acelera a fluência. 🗣️</p>
+      <button class="btn btn-primario" id="btnDeNovo">Praticar de novo</button>
+      <button class="btn btn-primario" id="btnModos" style="background:var(--verde)">Outras práticas</button>
+    </div>
+  `;
+  document.getElementById("btnDeNovo").onclick = telaFala;
+  document.getElementById("btnModos").onclick = telaModos;
 }
 
 /* Tela 6: revisão espaçada (as palavras "vencidas" de todos os temas) */
@@ -410,7 +584,9 @@ function telaResultadoQuiz(acertos, total) {
 btnVoltar.onclick = () => {
   if (estado.tela === "idiomas") telaPerfis();
   else if (estado.tela === "categorias") telaIdiomas();
-  else if (["estudo", "fim", "quiz", "resultado", "revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
+  else if (estado.tela === "modos") telaCategorias();
+  else if (["estudo", "fim", "quiz", "resultado", "fala", "falaFim"].includes(estado.tela)) telaModos();
+  else if (["revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
   else telaPerfis();
 };
 
