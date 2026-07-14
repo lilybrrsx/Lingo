@@ -1,0 +1,191 @@
+/* ===== Lingo — Estilo visual =====
+   Cores e layout do app. Mexer aqui muda a aparência. */
+
+:root {
+  --azul: #4f6ef7;
+  --azul-escuro: #3a52d4;
+  --verde: #22c07a;
+  --amarelo: #f7b955;
+  --fundo: #f4f6fb;
+  --cartao: #ffffff;
+  --texto: #1e2233;
+  --texto-suave: #6b7280;
+  --borda: #e5e8f0;
+  --sombra: 0 6px 20px rgba(30, 40, 90, 0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Cabeçalho ===== */
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--azul), var(--azul-escuro));
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  flex: 1;
+  text-align: center;
+}
+.perfil-atual { font-size: 0.9rem; opacity: 0.9; min-width: 40px; text-align: right; }
+.btn-voltar {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.btn-voltar:hover { background: rgba(255,255,255,0.35); }
+
+/* ===== Área principal ===== */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 18px 60px;
+}
+
+.titulo-tela { font-size: 1.3rem; margin-bottom: 6px; }
+.subtitulo { color: var(--texto-suave); margin-bottom: 22px; }
+
+/* ===== Grade de botões (perfis, idiomas, categorias) ===== */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.cartao-opcao {
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  padding: 22px 16px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.cartao-opcao:hover { transform: translateY(-3px); border-color: var(--azul); }
+.cartao-opcao .emoji { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+.cartao-opcao .nome { font-weight: 700; }
+.cartao-opcao .info { font-size: 0.8rem; color: var(--texto-suave); margin-top: 4px; }
+
+/* ===== Cartão de estudo (flashcard) ===== */
+.barra-progresso {
+  height: 8px;
+  background: var(--borda);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.barra-progresso > div {
+  height: 100%;
+  background: var(--verde);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.flashcard {
+  background: var(--cartao);
+  border-radius: 20px;
+  box-shadow: var(--sombra);
+  padding: 40px 24px;
+  text-align: center;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.flashcard .palavra { font-size: 2rem; font-weight: 800; }
+.flashcard .traducao { font-size: 1.8rem; color: var(--azul); font-weight: 700; }
+.flashcard .dica { color: var(--texto-suave); font-size: 0.9rem; }
+.flashcard.revelado { border: 2px solid var(--azul); }
+
+.btn-audio {
+  background: var(--amarelo);
+  border: none;
+  border-radius: 99px;
+  width: 56px;
+  height: 56px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+}
+.btn-audio:active { transform: scale(0.92); }
+
+/* ===== Botões de ação ===== */
+.acoes {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+.btn {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+.btn-rever { background: var(--amarelo); }
+.btn-sabia { background: var(--verde); }
+.btn-primario {
+  background: var(--azul);
+  width: 100%;
+  margin-top: 14px;
+}
+.btn:active { transform: scale(0.98); }
+
+/* ===== Quiz ===== */
+.opcao-quiz {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--cartao);
+  border: 2px solid var(--borda);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.opcao-quiz:hover { border-color: var(--azul); }
+.opcao-quiz.certa { border-color: var(--verde); background: #eafaf2; }
+.opcao-quiz.errada { border-color: #e5484d; background: #fdecec; }
+
+/* ===== Tela final ===== */
+.parabens { text-align: center; padding: 30px 0; }
+.parabens .emoji-grande { font-size: 4rem; }
+
+/* ===== Rodapé ===== */
+.rodape {
+  text-align: center;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  padding: 20px;
+}
