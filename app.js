@@ -512,14 +512,22 @@ function iniciarLacuna(licao) {
   let escolha = null;
   let ordemOpcoes = [];
 
-  /* A frase completa é derivada: "Vado ___ Roma" + "a" = "Vado a Roma" */
-  function completar(ex) { return ex.frase.replace("___", ex.resposta); }
+  /* Junta a frase com a resposta:
+       "Vado ___ Roma" + "a"  →  "Vado a Roma"
+     Artigos elididos (L', l') COLAM na palavra seguinte:
+       "___ amico" + "L'"  →  "L'amico"  (e não "L' amico") */
+  function preencher(ex, valor) {
+    return ex.resposta.endsWith("'")
+      ? ex.frase.replace("___ ", valor)
+      : ex.frase.replace("___", valor);
+  }
+  function completar(ex) { return preencher(ex, ex.resposta); }
 
   function desenhar() {
     const ex = exercicios[indice];
     const progresso = Math.round((indice / exercicios.length) * 100);
     const fraseMostrada = respondido
-      ? ex.frase.replace("___", `<strong class="lacuna-certa">${ex.resposta}</strong>`)
+      ? preencher(ex, `<strong class="lacuna-certa">${ex.resposta}</strong>`)
       : ex.frase.replace("___", `<span class="lacuna">_____</span>`);
     app.innerHTML = `
       <div class="barra-progresso"><div style="width:${progresso}%"></div></div>
