@@ -2,17 +2,25 @@
    Cores e layout do app. Mexer aqui muda a aparência. */
 
 :root {
-  --azul: #4f6ef7;
-  --azul-escuro: #3a52d4;
-  --verde: #22c07a;
-  --amarelo: #f7b955;
-  --vermelho: #e5484d;
-  --fundo: #f4f6fb;
+  /* Cor principal do app — rosa.
+     O rosa bebê (--rosa-bebe) é bem clarinho: serve para fundos.
+     O --rosa é um tom mais forte, usado onde tem texto branco em cima
+     (botões, cabeçalho), senão não daria para ler. */
+  --rosa: #d1477a;
+  --rosa-escuro: #a8325c;
+  --rosa-bebe: #ffdce8;
+
+  /* Cores com significado (não mudam com o tema) */
+  --verde: #22a06b;     /* acertou */
+  --amarelo: #e8a33d;   /* atenção / quase */
+  --vermelho: #e5484d;  /* errou */
+
+  --fundo: #fff5f8;     /* fundo rosa bebê */
   --cartao: #ffffff;
-  --texto: #1e2233;
-  --texto-suave: #6b7280;
-  --borda: #e5e8f0;
-  --sombra: 0 6px 20px rgba(30, 40, 90, 0.08);
+  --texto: #3d2b33;
+  --texto-suave: #8a7480;
+  --borda: #f7dbe5;
+  --sombra: 0 6px 20px rgba(180, 90, 130, 0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +40,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
-  background: linear-gradient(135deg, var(--azul), var(--azul-escuro));
+  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
   color: #fff;
   position: sticky;
   top: 0;
@@ -85,7 +93,7 @@ main {
   box-shadow: var(--sombra);
   transition: transform 0.12s ease, border-color 0.12s ease;
 }
-.cartao-opcao:hover { transform: translateY(-3px); border-color: var(--azul); }
+.cartao-opcao:hover { transform: translateY(-3px); border-color: var(--rosa); }
 .cartao-opcao .emoji { font-size: 2.2rem; display: block; margin-bottom: 8px; }
 .cartao-opcao .nome { font-weight: 700; }
 .cartao-opcao .info { font-size: 0.8rem; color: var(--texto-suave); margin-top: 4px; }
@@ -93,7 +101,7 @@ main {
 /* ===== Cartão de estudo (flashcard) ===== */
 .barra-progresso {
   height: 8px;
-  background: var(--borda);
+  background: var(--rosa-bebe);
   border-radius: 99px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -121,9 +129,9 @@ main {
   user-select: none;
 }
 .flashcard .palavra { font-size: 2rem; font-weight: 800; }
-.flashcard .traducao { font-size: 1.8rem; color: var(--azul); font-weight: 700; }
+.flashcard .traducao { font-size: 1.8rem; color: var(--rosa); font-weight: 700; }
 .flashcard .dica { color: var(--texto-suave); font-size: 0.9rem; }
-.flashcard.revelado { border: 2px solid var(--azul); }
+.flashcard.revelado { border: 2px solid var(--rosa); }
 
 .btn-audio {
   background: var(--amarelo);
@@ -156,7 +164,7 @@ main {
 .btn-rever { background: var(--amarelo); }
 .btn-sabia { background: var(--verde); }
 .btn-primario {
-  background: var(--azul);
+  background: var(--rosa);
   width: 100%;
   margin-top: 14px;
 }
@@ -175,7 +183,7 @@ main {
   font-size: 1.05rem;
   cursor: pointer;
 }
-.opcao-quiz:hover { border-color: var(--azul); }
+.opcao-quiz:hover { border-color: var(--rosa); }
 .opcao-quiz.certa { border-color: var(--verde); background: #eafaf2; }
 .opcao-quiz.errada { border-color: #e5484d; background: #fdecec; }
 
@@ -201,7 +209,7 @@ main {
   cursor: pointer;
   color: var(--texto-suave);
 }
-.btn-nivel.ativo { background: var(--azul); color: #fff; border-color: var(--azul); }
+.btn-nivel.ativo { background: var(--rosa); color: #fff; border-color: var(--rosa); }
 .btn-nivel.vazio { opacity: 0.45; }
 
 /* ===== Botão de revisão (repetição espaçada) ===== */
@@ -223,7 +231,7 @@ main {
 /* ===== Botões de avaliação da revisão ===== */
 .btn-errei { background: var(--vermelho); }
 .btn-bom   { background: var(--verde); }
-.btn-facil { background: var(--azul); }
+.btn-facil { background: var(--rosa); }
 
 /* ===== Prática de fala ===== */
 .btn-microfone { background: var(--vermelho); }
@@ -260,7 +268,7 @@ main {
 .explicacao p { margin-bottom: 12px; }
 .explicacao ul { margin: 0 0 12px 20px; }
 .explicacao li { margin-bottom: 6px; }
-.explicacao em { color: var(--azul); font-style: italic; }
+.explicacao em { color: var(--rosa); font-style: italic; }
 
 .tabela-gramatica {
   width: 100%;
@@ -276,7 +284,7 @@ main {
   vertical-align: top;
 }
 .tabela-gramatica th { background: var(--fundo); font-weight: 700; }
-.tabela-gramatica strong { color: var(--azul); }
+.tabela-gramatica strong { color: var(--rosa); }
 
 /* ===== Gramática: exercício de lacuna ===== */
 .frase-lacuna {
@@ -284,7 +292,7 @@ main {
   font-weight: 700;
   line-height: 1.5;
 }
-.lacuna { color: var(--azul); letter-spacing: 2px; }
+.lacuna { color: var(--rosa); letter-spacing: 2px; }
 .lacuna-certa { color: var(--verde); }
 
 /* ===== Campo de resposta (ditado e escrita) ===== */
@@ -301,7 +309,7 @@ main {
   border-radius: 12px;
   outline: none;
 }
-.campo-resposta:focus { border-color: var(--azul); background: #fff; }
+.campo-resposta:focus { border-color: var(--rosa); background: #fff; }
 .campo-resposta:disabled { opacity: 0.9; }
 
 /* Caixa de aviso */
