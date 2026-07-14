@@ -53,6 +53,8 @@ Lingo.CATALOGO = {
     { cat: "Verbos",      tipo: "vocabulario", nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/ingles/verbos.js" },
     { cat: "Artigos",     tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/ingles/gram-artigos.js" },
     { cat: "Verbo To Be", tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/ingles/gram-tobe.js" },
+    { cat: "My family",   tipo: "leitura",     nivel: "A1", emoji: "📖", qtd: 5,  arquivo: "dados/ingles/ler-apresentacao.js" },
+    { cat: "Breakfast",   tipo: "leitura",     nivel: "A1", emoji: "📖", qtd: 4,  arquivo: "dados/ingles/ler-breakfast.js" },
   ],
   italiano: [
     { cat: "Saudações",    tipo: "vocabulario", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/italiano/saudacoes.js" },
@@ -62,6 +64,8 @@ Lingo.CATALOGO = {
     { cat: "Verbos",       tipo: "vocabulario", nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/italiano/verbos.js" },
     { cat: "Artigos",      tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/italiano/gram-artigos.js" },
     { cat: "Verbo Essere", tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/italiano/gram-essere.js" },
+    { cat: "Mi presento",  tipo: "leitura",     nivel: "A1", emoji: "📖", qtd: 5,  arquivo: "dados/italiano/ler-apresentacao.js" },
+    { cat: "A colazione",  tipo: "leitura",     nivel: "A1", emoji: "📖", qtd: 4,  arquivo: "dados/italiano/ler-colazione.js" },
   ],
   frances: [
     { cat: "Saudações",   tipo: "vocabulario", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/frances/saudacoes.js" },
@@ -69,8 +73,10 @@ Lingo.CATALOGO = {
     { cat: "Família",     tipo: "vocabulario", nivel: "A1", emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/frances/familia.js" },
     { cat: "Comida",      tipo: "vocabulario", nivel: "A1", emoji: "🍎", qtd: 10, arquivo: "dados/frances/comida.js" },
     { cat: "Verbos",      tipo: "vocabulario", nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/frances/verbos.js" },
-    { cat: "Artigos",     tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/frances/gram-artigos.js" },
-    { cat: "Verbo Être",  tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/frances/gram-etre.js" },
+    { cat: "Artigos",           tipo: "gramatica", nivel: "A1", emoji: "📐", qtd: 8, arquivo: "dados/frances/gram-artigos.js" },
+    { cat: "Verbo Être",        tipo: "gramatica", nivel: "A1", emoji: "📐", qtd: 8, arquivo: "dados/frances/gram-etre.js" },
+    { cat: "Je me présente",    tipo: "leitura",   nivel: "A1", emoji: "📖", qtd: 5, arquivo: "dados/frances/ler-apresentacao.js" },
+    { cat: "Le petit déjeuner", tipo: "leitura",   nivel: "A1", emoji: "📖", qtd: 4, arquivo: "dados/frances/ler-petitdejeuner.js" },
   ],
   espanhol: [
     { cat: "Saudações", tipo: "vocabulario", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/espanhol/saudacoes.js" },
@@ -78,7 +84,9 @@ Lingo.CATALOGO = {
     { cat: "Família",   tipo: "vocabulario", nivel: "A1", emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/espanhol/familia.js" },
     { cat: "Comida",    tipo: "vocabulario", nivel: "A1", emoji: "🍎", qtd: 10, arquivo: "dados/espanhol/comida.js" },
     { cat: "Verbos",    tipo: "vocabulario", nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/espanhol/verbos.js" },
-    { cat: "Artigos",   tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/espanhol/gram-artigos.js" },
-    { cat: "Verbo Ser", tipo: "gramatica",   nivel: "A1", emoji: "📐", qtd: 8,  arquivo: "dados/espanhol/gram-ser.js" },
+    { cat: "Artigos",     tipo: "gramatica", nivel: "A1", emoji: "📐", qtd: 8, arquivo: "dados/espanhol/gram-artigos.js" },
+    { cat: "Verbo Ser",   tipo: "gramatica", nivel: "A1", emoji: "📐", qtd: 8, arquivo: "dados/espanhol/gram-ser.js" },
+    { cat: "Me presento", tipo: "leitura",   nivel: "A1", emoji: "📖", qtd: 5, arquivo: "dados/espanhol/ler-apresentacao.js" },
+    { cat: "El desayuno", tipo: "leitura",   nivel: "A1", emoji: "📖", qtd: 4, arquivo: "dados/espanhol/ler-desayuno.js" },
   ],
 };

@@ -75,9 +75,20 @@ Construir os motores de exercício **e** o conteúdo A1 de cada habilidade:
 - ✅ 📐 **Gramática** — explicação + exercícios de completar lacuna.
   As **frases completas** entram na revisão espaçada (frase gruda melhor que regra).
   Prontas nos 4 idiomas: **Artigos** e **Verbo Ser** _(2 lições × 8 exercícios cada)_
+- ✅ 📖 **Ler** — texto no idioma + perguntas de compreensão.
+  O texto pode ser **ouvido em voz alta** (serve de leitura E de escuta) e a
+  tradução fica escondida até a pessoa querer conferir.
+  Prontos nos 4 idiomas: **apresentação pessoal** e **café da manhã**.
+
+> ### 🎉 Todos os 6 motores estão prontos!
+> Daqui em diante, **A2, B1, B2, C1 e C2 não precisam de programação nova** —
+> são só conteúdo novo nos mesmos motores.
+
+**O que falta no A1 (só conteúdo):**
+
 - ⏳ 📚 **Vocabulário** — ampliar A1 para ~500 palavras **por ordem de frequência** _(hoje: 50)_
-- ⏳ 📐 **Gramática** — mais lições A1 (presente dos verbos regulares, preposições, plural)
-- ⏳ 📖 **Ler** — frases e textinhos A1 + perguntas de compreensão
+- ⏳ 📐 **Gramática** — mais lições A1 (presente dos verbos, plural, preposições, negação, perguntas)
+- ⏳ 📖 **Ler** — mais textos A1
 
 > 💡 **Por que frequência e gramática andam juntas:** as palavras mais comuns de
 > qualquer idioma *são* gramática (*di, e, il, la, che, è...*). E elas não funcionam

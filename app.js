@@ -30,6 +30,12 @@ Lingo.registrarGramatica = function (idioma, categoria, licao) {
   Lingo._conteudo[idioma][categoria] = licao;
 };
 
+/* Registra um texto de LEITURA ({ texto, traducao, perguntas }) */
+Lingo.registrarLeitura = function (idioma, categoria, leitura) {
+  Lingo._conteudo[idioma] = Lingo._conteudo[idioma] || {};
+  Lingo._conteudo[idioma][categoria] = leitura;
+};
+
 Lingo.carregarCategoria = function (idioma, categoria, aoTerminar, aoFalhar) {
   if (Lingo._conteudo[idioma] && Lingo._conteudo[idioma][categoria]) {
     aoTerminar(Lingo._conteudo[idioma][categoria]);
@@ -171,7 +177,9 @@ function telaCategorias() {
     <div class="grade">
       ${temasNivel.length ? temasNivel.map(t => {
         const feito = foiConcluido(estado.perfil.id, estado.idioma, t.cat);
-        const unidade = t.tipo === "gramatica" ? "exercícios" : "palavras";
+        const unidade = t.tipo === "gramatica" ? "exercícios"
+                      : t.tipo === "leitura"   ? "perguntas"
+                      : "palavras";
         return `
         <div class="cartao-opcao" data-cat="${t.cat}">
           <span class="emoji">${feito ? "✅" : t.emoji}</span>
@@ -191,8 +199,9 @@ function telaCategorias() {
     el.onclick = () => {
       estado.categoria = el.dataset.cat;
       const tema = temas.find(x => x.cat === el.dataset.cat);
-      // gramática tem fluxo próprio (explicação + exercícios)
+      // gramática e leitura têm fluxo próprio; vocabulário abre os modos
       if (tema && tema.tipo === "gramatica") telaGramatica();
+      else if (tema && tema.tipo === "leitura") telaLeitura();
       else telaModos();
     };
   });
@@ -467,6 +476,136 @@ function telaFalaFim(acertos, total) {
   `;
   document.getElementById("btnDeNovo").onclick = telaFala;
   document.getElementById("btnModos").onclick = telaModos;
+}
+
+/* ============================================================
+   LER — texto no idioma + perguntas de compreensão
+   ------------------------------------------------------------
+   O texto pode ser ouvido em voz alta (serve de leitura E de
+   escuta) e a tradução fica escondida: a graça é tentar
+   entender antes de conferir.
+   ============================================================ */
+function telaLeitura() {
+  estado.tela = "leitura";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria, mostrarTexto, mostrarErroCarregar);
+}
+
+let traducaoVisivel = false;
+
+function mostrarTexto(leitura) {
+  estado.tela = "leitura";
+  const code = IDIOMAS[estado.idioma].code;
+  app.innerHTML = `
+    <h2 class="titulo-tela">📖 ${estado.categoria}</h2>
+    <p class="subtitulo">${IDIOMAS[estado.idioma].bandeira} Leia e tente entender. Só depois veja a tradução!</p>
+    <div class="texto-leitura">${leitura.texto.replace(/\n/g, "<br>")}</div>
+    <button class="btn-audio btn-audio-largo" id="btnOuvirTexto" title="Ouvir o texto">🔊 Ouvir o texto</button>
+    <button class="btn btn-traducao" id="btnTraducao">
+      ${traducaoVisivel ? "🙈 Esconder a tradução" : "👁️ Ver a tradução"}
+    </button>
+    ${traducaoVisivel ? `<div class="texto-traducao">${leitura.traducao.replace(/\n/g, "<br>")}</div>` : ""}
+    <button class="btn btn-primario" id="btnPerguntas">
+      Responder as ${leitura.perguntas.length} perguntas →
+    </button>
+  `;
+  document.getElementById("btnOuvirTexto").onclick = () => falar(leitura.texto, code);
+  document.getElementById("btnTraducao").onclick = () => {
+    traducaoVisivel = !traducaoVisivel;
+    mostrarTexto(leitura);
+  };
+  document.getElementById("btnPerguntas").onclick = telaPerguntas;
+}
+
+function telaPerguntas() {
+  estado.tela = "perguntas";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria, iniciarPerguntas, mostrarErroCarregar);
+}
+
+function iniciarPerguntas(leitura) {
+  const code = IDIOMAS[estado.idioma].code;
+  const perguntas = embaralhar(leitura.perguntas);
+  let indice = 0;
+  let acertos = 0;
+  let respondido = false;
+  let escolha = null;
+  let ordemOpcoes = [];
+
+  function desenhar() {
+    const p = perguntas[indice];
+    const progresso = Math.round((indice / perguntas.length) * 100);
+    app.innerHTML = `
+      <div class="barra-progresso"><div style="width:${progresso}%"></div></div>
+      <p class="subtitulo">📖 ${estado.categoria} • ${indice + 1} de ${perguntas.length}</p>
+      <h2 class="titulo-tela pergunta">${p.pergunta}</h2>
+      <div id="opcoes">
+        ${ordemOpcoes.map(o => {
+          let classe = "";
+          if (respondido) {
+            if (o === p.resposta) classe = "certa";
+            else if (o === escolha) classe = "errada";
+          }
+          return `<button class="opcao-quiz ${classe}" data-op="${o}" ${respondido ? "disabled" : ""}>${o}</button>`;
+        }).join("")}
+      </div>
+      ${respondido ? `
+        <div class="acoes"><button class="btn btn-sabia" id="btnProxima">Próxima →</button></div>
+        <button class="btn btn-traducao" id="btnReler">📖 Reler o texto</button>
+      ` : `<button class="btn btn-traducao" id="btnReler">📖 Reler o texto</button>`}
+    `;
+    document.getElementById("btnReler").onclick = telaLeitura;
+    if (respondido) {
+      document.getElementById("btnProxima").onclick = proxima;
+    } else {
+      app.querySelectorAll("[data-op]").forEach(b => { b.onclick = () => responder(b.dataset.op); });
+    }
+  }
+
+  function responder(op) {
+    const p = perguntas[indice];
+    escolha = op;
+    respondido = true;
+    if (op === p.resposta) acertos++;
+    falar(p.resposta, code);
+    desenhar();
+  }
+
+  function proxima() {
+    indice++;
+    respondido = false;
+    escolha = null;
+    if (indice >= perguntas.length) { salvarConcluido(); telaLeituraFim(acertos, perguntas.length); }
+    else novaPergunta();
+  }
+
+  function novaPergunta() {
+    ordemOpcoes = embaralhar(perguntas[indice].opcoes);
+    desenhar();
+  }
+
+  novaPergunta();
+}
+
+function telaLeituraFim(acertos, total) {
+  estado.tela = "leituraFim";
+  const nota = Math.round((acertos / total) * 100);
+  const emoji = nota >= 80 ? "🏆" : nota >= 50 ? "👍" : "💪";
+  app.innerHTML = `
+    <div class="parabens">
+      <div class="emoji-grande">${emoji}</div>
+      <h2 class="titulo-tela">${acertos} de ${total} certas!</h2>
+      <p class="subtitulo">Ler no idioma é a forma mais natural de aprender. 📖</p>
+      <button class="btn btn-primario" id="btnReler">Reler o texto</button>
+      <button class="btn btn-primario" id="btnRefazer" style="background:var(--verde)">Refazer as perguntas</button>
+      <button class="btn btn-primario" id="btnTemas" style="background:var(--amarelo)">Escolher outro tema</button>
+    </div>
+  `;
+  document.getElementById("btnReler").onclick = telaLeitura;
+  document.getElementById("btnRefazer").onclick = telaPerguntas;
+  document.getElementById("btnTemas").onclick = telaCategorias;
 }
 
 /* ============================================================
@@ -888,7 +1027,8 @@ btnVoltar.onclick = () => {
   else if (["estudo", "fim", "quiz", "resultado", "fala", "falaFim",
             "ditado", "escrever", "escritaFim"].includes(estado.tela)) telaModos();
   else if (["lacuna", "lacunaFim"].includes(estado.tela)) telaGramatica();
-  else if (["gramatica", "revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
+  else if (["perguntas", "leituraFim"].includes(estado.tela)) telaLeitura();
+  else if (["gramatica", "leitura", "revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
   else telaPerfis();
 };
 

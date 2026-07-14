@@ -255,6 +255,43 @@ main {
   font-style: italic;
 }
 
+/* ===== Leitura ===== */
+.texto-leitura {
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: var(--sombra);
+  font-size: 1.15rem;
+  line-height: 1.9;
+  margin-bottom: 14px;
+}
+.texto-traducao {
+  background: var(--rosa-bebe);
+  border-radius: 14px;
+  padding: 18px;
+  line-height: 1.8;
+  color: var(--texto);
+  margin-bottom: 14px;
+}
+.btn-audio-largo {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.btn-traducao {
+  width: 100%;
+  background: var(--cartao);
+  color: var(--rosa);
+  border: 2px solid var(--rosa);
+  margin-bottom: 10px;
+}
+.pergunta { font-size: 1.2rem; margin-bottom: 16px; }
+
 /* ===== Gramática: explicação ===== */
 .explicacao {
   background: var(--cartao);
