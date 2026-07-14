@@ -247,6 +247,46 @@ main {
   font-style: italic;
 }
 
+/* ===== Gramática: explicação ===== */
+.explicacao {
+  background: var(--cartao);
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--sombra);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.explicacao p { margin-bottom: 12px; }
+.explicacao ul { margin: 0 0 12px 20px; }
+.explicacao li { margin-bottom: 6px; }
+.explicacao em { color: var(--azul); font-style: italic; }
+
+.tabela-gramatica {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 16px;
+  font-size: 0.95rem;
+}
+.tabela-gramatica th,
+.tabela-gramatica td {
+  border: 1px solid var(--borda);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.tabela-gramatica th { background: var(--fundo); font-weight: 700; }
+.tabela-gramatica strong { color: var(--azul); }
+
+/* ===== Gramática: exercício de lacuna ===== */
+.frase-lacuna {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.lacuna { color: var(--azul); letter-spacing: 2px; }
+.lacuna-certa { color: var(--verde); }
+
 /* ===== Campo de resposta (ditado e escrita) ===== */
 .campo-resposta {
   width: 100%;

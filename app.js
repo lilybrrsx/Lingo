@@ -18,9 +18,16 @@ const SRS      = Lingo.SRS;
 /* ============================================================
    CARREGAMENTO SOB DEMANDA
    ============================================================ */
+/* Registra um tema de VOCABULÁRIO (lista de palavras) */
 Lingo.registrar = function (idioma, categoria, palavras) {
   Lingo._conteudo[idioma] = Lingo._conteudo[idioma] || {};
   Lingo._conteudo[idioma][categoria] = palavras;
+};
+
+/* Registra uma lição de GRAMÁTICA ({ explicacao, exercicios }) */
+Lingo.registrarGramatica = function (idioma, categoria, licao) {
+  Lingo._conteudo[idioma] = Lingo._conteudo[idioma] || {};
+  Lingo._conteudo[idioma][categoria] = licao;
 };
 
 Lingo.carregarCategoria = function (idioma, categoria, aoTerminar, aoFalhar) {
@@ -164,11 +171,12 @@ function telaCategorias() {
     <div class="grade">
       ${temasNivel.length ? temasNivel.map(t => {
         const feito = foiConcluido(estado.perfil.id, estado.idioma, t.cat);
+        const unidade = t.tipo === "gramatica" ? "exercícios" : "palavras";
         return `
         <div class="cartao-opcao" data-cat="${t.cat}">
           <span class="emoji">${feito ? "✅" : t.emoji}</span>
           <div class="nome">${t.cat}</div>
-          <div class="info">${t.qtd} palavras</div>
+          <div class="info">${t.qtd} ${unidade}</div>
         </div>`;
       }).join("") : `<p class="subtitulo" style="grid-column:1/-1">🚧 Conteúdo do nível ${estado.nivel} em breve.</p>`}
     </div>
@@ -180,7 +188,13 @@ function telaCategorias() {
     el.onclick = () => { estado.nivel = el.dataset.nivel; telaCategorias(); };
   });
   app.querySelectorAll("[data-cat]").forEach(el => {
-    el.onclick = () => { estado.categoria = el.dataset.cat; telaModos(); };
+    el.onclick = () => {
+      estado.categoria = el.dataset.cat;
+      const tema = temas.find(x => x.cat === el.dataset.cat);
+      // gramática tem fluxo próprio (explicação + exercícios)
+      if (tema && tema.tipo === "gramatica") telaGramatica();
+      else telaModos();
+    };
   });
 }
 
@@ -456,6 +470,143 @@ function telaFalaFim(acertos, total) {
 }
 
 /* ============================================================
+   GRAMÁTICA — explicação + exercícios de completar lacuna
+   ------------------------------------------------------------
+   As frases completas viram cartões na revisão espaçada:
+   é assim que a gramática "gruda" — em frases, não em regras soltas.
+   ============================================================ */
+function telaGramatica() {
+  estado.tela = "gramatica";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria, mostrarExplicacao, mostrarErroCarregar);
+}
+
+function mostrarExplicacao(licao) {
+  estado.tela = "gramatica";
+  app.innerHTML = `
+    <h2 class="titulo-tela">📐 ${estado.categoria}</h2>
+    <p class="subtitulo">${IDIOMAS[estado.idioma].bandeira} ${IDIOMAS[estado.idioma].nome} • Nível A1</p>
+    <div class="explicacao">${licao.explicacao}</div>
+    <button class="btn btn-primario" id="btnComecar">
+      Começar os ${licao.exercicios.length} exercícios →
+    </button>
+  `;
+  document.getElementById("btnComecar").onclick = telaLacuna;
+}
+
+function telaLacuna() {
+  estado.tela = "lacuna";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria,
+    (licao) => iniciarLacuna(licao), mostrarErroCarregar);
+}
+
+function iniciarLacuna(licao) {
+  const code = IDIOMAS[estado.idioma].code;
+  const exercicios = embaralhar(licao.exercicios);
+  let indice = 0;
+  let acertos = 0;
+  let respondido = false;
+  let escolha = null;
+  let ordemOpcoes = [];
+
+  /* A frase completa é derivada: "Vado ___ Roma" + "a" = "Vado a Roma" */
+  function completar(ex) { return ex.frase.replace("___", ex.resposta); }
+
+  function desenhar() {
+    const ex = exercicios[indice];
+    const progresso = Math.round((indice / exercicios.length) * 100);
+    const fraseMostrada = respondido
+      ? ex.frase.replace("___", `<strong class="lacuna-certa">${ex.resposta}</strong>`)
+      : ex.frase.replace("___", `<span class="lacuna">_____</span>`);
+    app.innerHTML = `
+      <div class="barra-progresso"><div style="width:${progresso}%"></div></div>
+      <p class="subtitulo">📐 ${estado.categoria} • ${indice + 1} de ${exercicios.length}</p>
+      <div class="flashcard">
+        <div class="dica">${ex.pt}</div>
+        <div class="frase-lacuna">${fraseMostrada}</div>
+        ${respondido ? `<button class="btn-audio" id="btnAudio" title="Ouvir a frase">🔊</button>` : ""}
+        ${respondido ? blocoFeedback(ex) : ""}
+      </div>
+      <div id="opcoes">
+        ${ordemOpcoes.map(o => {
+          let classe = "";
+          if (respondido) {
+            if (o === ex.resposta) classe = "certa";
+            else if (o === escolha) classe = "errada";
+          }
+          return `<button class="opcao-quiz ${classe}" data-op="${o}" ${respondido ? "disabled" : ""}>${o}</button>`;
+        }).join("")}
+      </div>
+      ${respondido ? `<div class="acoes"><button class="btn btn-sabia" id="btnProxima">Próxima →</button></div>` : ""}
+    `;
+
+    if (respondido) {
+      document.getElementById("btnAudio").onclick = () => falar(completar(ex), code);
+      document.getElementById("btnProxima").onclick = proxima;
+    } else {
+      app.querySelectorAll("[data-op]").forEach(btn => {
+        btn.onclick = () => responder(btn.dataset.op);
+      });
+    }
+  }
+
+  function blocoFeedback(ex) {
+    if (escolha === ex.resposta) return `<div class="fala-ok">✅ Isso!</div>`;
+    return `<div class="fala-erro">❌ O certo é: <strong>${ex.resposta}</strong></div>`;
+  }
+
+  function responder(op) {
+    const ex = exercicios[indice];
+    escolha = op;
+    respondido = true;
+    const certo = op === ex.resposta;
+    if (certo) acertos++;
+    // A FRASE COMPLETA entra na revisão espaçada (frase gruda melhor que regra)
+    SRS.responder(estado.perfil.id, estado.idioma, estado.categoria,
+      { pt: ex.pt, tr: completar(ex) }, certo ? "bom" : "errei");
+    desenhar();
+    falar(completar(ex), code);
+  }
+
+  function proxima() {
+    indice++;
+    respondido = false;
+    escolha = null;
+    if (indice >= exercicios.length) { salvarConcluido(); telaLacunaFim(acertos, exercicios.length); }
+    else novaQuestao();
+  }
+
+  function novaQuestao() {
+    ordemOpcoes = embaralhar(exercicios[indice].opcoes);
+    desenhar();
+  }
+
+  novaQuestao();
+}
+
+function telaLacunaFim(acertos, total) {
+  estado.tela = "lacunaFim";
+  const nota = Math.round((acertos / total) * 100);
+  const emoji = nota >= 80 ? "🏆" : nota >= 50 ? "👍" : "💪";
+  app.innerHTML = `
+    <div class="parabens">
+      <div class="emoji-grande">${emoji}</div>
+      <h2 class="titulo-tela">${acertos} de ${total} certas!</h2>
+      <p class="subtitulo">As frases entraram na sua revisão — elas voltam nos próximos dias. 🔁</p>
+      <button class="btn btn-primario" id="btnDeNovo">Refazer os exercícios</button>
+      <button class="btn btn-primario" id="btnExplicacao" style="background:var(--verde)">Rever a explicação</button>
+      <button class="btn btn-primario" id="btnTemas" style="background:var(--amarelo)">Escolher outro tema</button>
+    </div>
+  `;
+  document.getElementById("btnDeNovo").onclick = telaLacuna;
+  document.getElementById("btnExplicacao").onclick = telaGramatica;
+  document.getElementById("btnTemas").onclick = telaCategorias;
+}
+
+/* ============================================================
    DITADO (ouvir) e ESCREVER — mesmo motor, prompts diferentes
    ------------------------------------------------------------
    Ditado:   ouve o áudio → escreve o que entendeu
@@ -728,7 +879,8 @@ btnVoltar.onclick = () => {
   else if (estado.tela === "modos") telaCategorias();
   else if (["estudo", "fim", "quiz", "resultado", "fala", "falaFim",
             "ditado", "escrever", "escritaFim"].includes(estado.tela)) telaModos();
-  else if (["revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
+  else if (["lacuna", "lacunaFim"].includes(estado.tela)) telaGramatica();
+  else if (["gramatica", "revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
   else telaPerfis();
 };
 

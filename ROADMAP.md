@@ -72,9 +72,17 @@ Construir os motores de exercício **e** o conteúdo A1 de cada habilidade:
   (não mostra a palavra; dá para repetir o áudio quantas vezes quiser)
 - ✅ ✍️ **Escrever** — vê em português e escreve no idioma
   (aceita a resposta sem acento, mas ensina a grafia certa)
-- ⏳ 📚 **Vocabulário** — ampliar A1 para ~500 palavras _(hoje: 50)_
-- ⏳ 📐 **Gramática** — lições A1 (artigos, presente) + exercício de lacuna
+- ✅ 📐 **Gramática** — explicação + exercícios de completar lacuna.
+  As **frases completas** entram na revisão espaçada (frase gruda melhor que regra).
+  Prontas nos 4 idiomas: **Artigos** e **Verbo Ser** _(2 lições × 8 exercícios cada)_
+- ⏳ 📚 **Vocabulário** — ampliar A1 para ~500 palavras **por ordem de frequência** _(hoje: 50)_
+- ⏳ 📐 **Gramática** — mais lições A1 (presente dos verbos regulares, preposições, plural)
 - ⏳ 📖 **Ler** — frases e textinhos A1 + perguntas de compreensão
+
+> 💡 **Por que frequência e gramática andam juntas:** as palavras mais comuns de
+> qualquer idioma *são* gramática (*di, e, il, la, che, è...*). E elas não funcionam
+> em cartão solto — só fazem sentido dentro de frases. Por isso a gramática veio antes
+> de encher o vocabulário.
 
 > ⚠️ A prática de fala precisa de **https** (ou localhost) — o navegador
 > bloqueia o microfone em arquivos abertos direto do PC (`file://`).
