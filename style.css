@@ -6,6 +6,7 @@
   --azul-escuro: #3a52d4;
   --verde: #22c07a;
   --amarelo: #f7b955;
+  --vermelho: #e5484d;
   --fundo: #f4f6fb;
   --cartao: #ffffff;
   --texto: #1e2233;
@@ -181,6 +182,48 @@ main {
 /* ===== Tela final ===== */
 .parabens { text-align: center; padding: 30px 0; }
 .parabens .emoji-grande { font-size: 4rem; }
+
+/* ===== Níveis (A1..C2) ===== */
+.filtro-niveis {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 6px 0 14px;
+}
+.btn-nivel {
+  flex: 1;
+  min-width: 44px;
+  padding: 10px 0;
+  border: 2px solid var(--borda);
+  background: var(--cartao);
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--texto-suave);
+}
+.btn-nivel.ativo { background: var(--azul); color: #fff; border-color: var(--azul); }
+.btn-nivel.vazio { opacity: 0.45; }
+
+/* ===== Botão de revisão (repetição espaçada) ===== */
+.btn-revisar {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--verde), #17a866);
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra);
+}
+.btn-revisar:active { transform: scale(0.99); }
+
+/* ===== Botões de avaliação da revisão ===== */
+.btn-errei { background: var(--vermelho); }
+.btn-bom   { background: var(--verde); }
+.btn-facil { background: var(--azul); }
 
 /* ===== Rodapé ===== */
 .rodape {

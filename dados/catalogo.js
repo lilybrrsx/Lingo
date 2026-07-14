@@ -2,14 +2,15 @@
    Lingo — CATÁLOGO
    ------------------------------------------------------------
    Este arquivo é LEVE e sempre carregado ao abrir o app.
-   Ele só LISTA o que existe (idiomas, perfis e temas) — NÃO
-   contém as palavras. As palavras ficam em arquivos separados
+   Ele só LISTA o que existe (idiomas, perfis, níveis e temas) —
+   NÃO contém as palavras. As palavras ficam em arquivos separados
    dentro de /dados/<idioma>/ e são carregadas só quando o
    tema é aberto (isso mantém o app leve e rápido).
 
    Para ADICIONAR um tema novo:
    1. crie o arquivo com as palavras (ex.: dados/ingles/viagem.js)
-   2. adicione uma linha aqui no CATALOGO apontando para ele.
+   2. adicione uma linha aqui no CATALOGO apontando para ele,
+      informando também o "nivel" (A1, A2, B1, B2, C1 ou C2).
    ============================================================ */
 
 window.Lingo = window.Lingo || { _conteudo: {} };
@@ -29,36 +30,46 @@ Lingo.PERFIS = [
   { id: "eu",   nome: "Eu",         emoji: "🙋", idiomas: ["italiano", "frances"] },
 ];
 
+/* Níveis do Quadro Europeu (CEFR), do iniciante ao proficiente. */
+Lingo.NIVEIS = [
+  { id: "A1", desc: "Iniciante — primeiras palavras e frases" },
+  { id: "A2", desc: "Básico — situações simples do dia a dia" },
+  { id: "B1", desc: "Intermediário — já se vira sozinho" },
+  { id: "B2", desc: "Intermediário alto — conversa com fluência" },
+  { id: "C1", desc: "Avançado — usa o idioma com naturalidade" },
+  { id: "C2", desc: "Proficiente — praticamente como nativo" },
+];
+
 /* Catálogo de temas por idioma.
-   Cada item diz: nome do tema, um emoji, quantas palavras tem e
-   em qual arquivo elas estão. As palavras NÃO estão aqui. */
+   Cada item diz: nome do tema, nível, emoji, quantas palavras tem
+   e em qual arquivo elas estão. As palavras NÃO estão aqui. */
 Lingo.CATALOGO = {
   ingles: [
-    { cat: "Saudações", emoji: "👋", qtd: 10, arquivo: "dados/ingles/saudacoes.js" },
-    { cat: "Números",   emoji: "🔢", qtd: 10, arquivo: "dados/ingles/numeros.js" },
-    { cat: "Família",   emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/ingles/familia.js" },
-    { cat: "Comida",    emoji: "🍎", qtd: 10, arquivo: "dados/ingles/comida.js" },
-    { cat: "Verbos",    emoji: "🏃", qtd: 10, arquivo: "dados/ingles/verbos.js" },
+    { cat: "Saudações", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/ingles/saudacoes.js" },
+    { cat: "Números",   nivel: "A1", emoji: "🔢", qtd: 10, arquivo: "dados/ingles/numeros.js" },
+    { cat: "Família",   nivel: "A1", emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/ingles/familia.js" },
+    { cat: "Comida",    nivel: "A1", emoji: "🍎", qtd: 10, arquivo: "dados/ingles/comida.js" },
+    { cat: "Verbos",    nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/ingles/verbos.js" },
   ],
   italiano: [
-    { cat: "Saudações", emoji: "👋", qtd: 10, arquivo: "dados/italiano/saudacoes.js" },
-    { cat: "Números",   emoji: "🔢", qtd: 10, arquivo: "dados/italiano/numeros.js" },
-    { cat: "Família",   emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/italiano/familia.js" },
-    { cat: "Comida",    emoji: "🍎", qtd: 10, arquivo: "dados/italiano/comida.js" },
-    { cat: "Verbos",    emoji: "🏃", qtd: 10, arquivo: "dados/italiano/verbos.js" },
+    { cat: "Saudações", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/italiano/saudacoes.js" },
+    { cat: "Números",   nivel: "A1", emoji: "🔢", qtd: 10, arquivo: "dados/italiano/numeros.js" },
+    { cat: "Família",   nivel: "A1", emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/italiano/familia.js" },
+    { cat: "Comida",    nivel: "A1", emoji: "🍎", qtd: 10, arquivo: "dados/italiano/comida.js" },
+    { cat: "Verbos",    nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/italiano/verbos.js" },
   ],
   frances: [
-    { cat: "Saudações", emoji: "👋", qtd: 10, arquivo: "dados/frances/saudacoes.js" },
-    { cat: "Números",   emoji: "🔢", qtd: 10, arquivo: "dados/frances/numeros.js" },
-    { cat: "Família",   emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/frances/familia.js" },
-    { cat: "Comida",    emoji: "🍎", qtd: 10, arquivo: "dados/frances/comida.js" },
-    { cat: "Verbos",    emoji: "🏃", qtd: 10, arquivo: "dados/frances/verbos.js" },
+    { cat: "Saudações", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/frances/saudacoes.js" },
+    { cat: "Números",   nivel: "A1", emoji: "🔢", qtd: 10, arquivo: "dados/frances/numeros.js" },
+    { cat: "Família",   nivel: "A1", emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/frances/familia.js" },
+    { cat: "Comida",    nivel: "A1", emoji: "🍎", qtd: 10, arquivo: "dados/frances/comida.js" },
+    { cat: "Verbos",    nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/frances/verbos.js" },
   ],
   espanhol: [
-    { cat: "Saudações", emoji: "👋", qtd: 10, arquivo: "dados/espanhol/saudacoes.js" },
-    { cat: "Números",   emoji: "🔢", qtd: 10, arquivo: "dados/espanhol/numeros.js" },
-    { cat: "Família",   emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/espanhol/familia.js" },
-    { cat: "Comida",    emoji: "🍎", qtd: 10, arquivo: "dados/espanhol/comida.js" },
-    { cat: "Verbos",    emoji: "🏃", qtd: 10, arquivo: "dados/espanhol/verbos.js" },
+    { cat: "Saudações", nivel: "A1", emoji: "👋", qtd: 10, arquivo: "dados/espanhol/saudacoes.js" },
+    { cat: "Números",   nivel: "A1", emoji: "🔢", qtd: 10, arquivo: "dados/espanhol/numeros.js" },
+    { cat: "Família",   nivel: "A1", emoji: "👨‍👩‍👧", qtd: 10, arquivo: "dados/espanhol/familia.js" },
+    { cat: "Comida",    nivel: "A1", emoji: "🍎", qtd: 10, arquivo: "dados/espanhol/comida.js" },
+    { cat: "Verbos",    nivel: "A1", emoji: "🏃", qtd: 10, arquivo: "dados/espanhol/verbos.js" },
   ],
 };
