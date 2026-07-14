@@ -68,11 +68,13 @@ Construir os motores de exercício **e** o conteúdo A1 de cada habilidade:
 - ✅ 🗣️ **Falar** — a pessoa fala no microfone e o app confere a pronúncia
   (reconhecimento de voz do navegador, grátis no Chrome; aceita diferenças de
   acento/pontuação e avisa quando ficou "quase"). Alimenta a revisão espaçada.
+- ✅ 👂 **Ouvir** — ditado: ouve o áudio e escreve o que entendeu
+  (não mostra a palavra; dá para repetir o áudio quantas vezes quiser)
+- ✅ ✍️ **Escrever** — vê em português e escreve no idioma
+  (aceita a resposta sem acento, mas ensina a grafia certa)
 - ⏳ 📚 **Vocabulário** — ampliar A1 para ~500 palavras _(hoje: 50)_
 - ⏳ 📐 **Gramática** — lições A1 (artigos, presente) + exercício de lacuna
-- ⏳ 👂 **Ouvir** — ditado: ouço o áudio e escrevo o que entendi
 - ⏳ 📖 **Ler** — frases e textinhos A1 + perguntas de compreensão
-- ⏳ ✍️ **Escrever** — escrever a palavra/frase ouvida ou traduzida
 
 > ⚠️ A prática de fala precisa de **https** (ou localhost) — o navegador
 > bloqueia o microfone em arquivos abertos direto do PC (`file://`).

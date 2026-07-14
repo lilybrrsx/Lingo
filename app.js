@@ -204,6 +204,16 @@ function telaModos() {
         <div class="nome">Falar</div>
         <div class="info">Praticar a pronúncia</div>
       </div>
+      <div class="cartao-opcao" data-modo="ditado">
+        <span class="emoji">👂</span>
+        <div class="nome">Ditado</div>
+        <div class="info">Ouvir e escrever</div>
+      </div>
+      <div class="cartao-opcao" data-modo="escrever">
+        <span class="emoji">✍️</span>
+        <div class="nome">Escrever</div>
+        <div class="info">Escrever a tradução</div>
+      </div>
       <div class="cartao-opcao" data-modo="quiz">
         <span class="emoji">🧠</span>
         <div class="nome">Quiz</div>
@@ -216,6 +226,8 @@ function telaModos() {
       const m = el.dataset.modo;
       if (m === "cartoes") telaEstudo();
       else if (m === "falar") telaFala();
+      else if (m === "ditado") telaDitado();
+      else if (m === "escrever") telaEscrever();
       else telaQuiz();
     };
   });
@@ -443,6 +455,135 @@ function telaFalaFim(acertos, total) {
   document.getElementById("btnModos").onclick = telaModos;
 }
 
+/* ============================================================
+   DITADO (ouvir) e ESCREVER — mesmo motor, prompts diferentes
+   ------------------------------------------------------------
+   Ditado:   ouve o áudio → escreve o que entendeu
+   Escrever: vê a palavra em português → escreve no idioma
+   ============================================================ */
+function telaDitado() {
+  estado.tela = "ditado";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria,
+    (p) => iniciarEscrita(p, "ditado"), mostrarErroCarregar);
+}
+
+function telaEscrever() {
+  estado.tela = "escrever";
+  btnVoltar.hidden = false;
+  mostrarCarregando();
+  Lingo.carregarCategoria(estado.idioma, estado.categoria,
+    (p) => iniciarEscrita(p, "escrever"), mostrarErroCarregar);
+}
+
+function iniciarEscrita(palavrasOriginais, modo) {
+  const code = IDIOMAS[estado.idioma].code;
+  const nomeIdioma = IDIOMAS[estado.idioma].nome;
+  const palavras = embaralhar(palavrasOriginais);
+  const titulo = modo === "ditado" ? "👂 Ditado" : "✍️ Escrever";
+  let indice = 0;
+  let fase = "respondendo";   // respondendo | resultado
+  let resultado = null;
+  let acertos = 0;
+
+  function desenhar() {
+    const atual = palavras[indice];
+    const progresso = Math.round((indice / palavras.length) * 100);
+    app.innerHTML = `
+      <div class="barra-progresso"><div style="width:${progresso}%"></div></div>
+      <p class="subtitulo">${titulo} • ${indice + 1} de ${palavras.length}</p>
+      <div class="flashcard">
+        ${modo === "ditado" ? `
+          <div class="dica">Ouça e escreva em ${nomeIdioma}</div>
+          <button class="btn-audio" id="btnOuvir" title="Ouvir de novo">🔊</button>
+        ` : `
+          <div class="dica">Escreva em ${nomeIdioma}</div>
+          <div class="palavra">${atual.pt}</div>
+        `}
+        <input class="campo-resposta" id="resposta" type="text" autocomplete="off"
+               autocapitalize="off" autocorrect="off" spellcheck="false"
+               placeholder="Digite aqui..." ${fase === "resultado" ? "disabled" : ""} />
+        ${fase === "resultado" ? blocoResultado() : ""}
+      </div>
+      ${fase === "resultado"
+        ? `<div class="acoes"><button class="btn btn-sabia" id="btnProxima">Próxima →</button></div>`
+        : `<button class="btn btn-primario" id="btnConferir">Conferir</button>`}
+    `;
+
+    if (modo === "ditado") {
+      document.getElementById("btnOuvir").onclick = () => falar(atual.tr, code);
+    }
+    const inp = document.getElementById("resposta");
+    if (fase === "respondendo") {
+      inp.focus();
+      inp.onkeydown = (e) => { if (e.key === "Enter") conferir(); };
+      document.getElementById("btnConferir").onclick = conferir;
+      if (modo === "ditado") falar(atual.tr, code);  // toca o áudio automaticamente
+    } else {
+      inp.value = resultado.digitado;
+      document.getElementById("btnProxima").onclick = proxima;
+    }
+  }
+
+  function blocoResultado() {
+    const r = resultado;
+    if (r.acertou && !r.acentoErrado) return `<div class="fala-ok">✅ Perfeito!</div>`;
+    if (r.acertou && r.acentoErrado) return `
+      <div class="fala-ok">✅ Quase perfeito!</div>
+      <div class="fala-ouvido">Atenção ao acento: <strong>${r.correta}</strong></div>`;
+    if (r.quase) return `
+      <div class="fala-quase">🤏 Quase!</div>
+      <div class="fala-ouvido">O certo é: <strong>${r.correta}</strong></div>`;
+    return `
+      <div class="fala-erro">❌ Não foi dessa vez</div>
+      <div class="fala-ouvido">O certo é: <strong>${r.correta}</strong></div>`;
+  }
+
+  function conferir() {
+    const digitado = document.getElementById("resposta").value;
+    if (!digitado.trim()) return;   // não confere vazio
+    resultado = Lingo.Texto.avaliarEscrita(palavras[indice].tr, digitado);
+    resultado.digitado = digitado;
+    fase = "resultado";
+    desenhar();
+    falar(palavras[indice].tr, code);  // ouve a pronúncia correta
+  }
+
+  function proxima() {
+    SRS.responder(estado.perfil.id, estado.idioma, estado.categoria,
+      palavras[indice], resultado.acertou ? "bom" : "errei");
+    if (resultado.acertou) acertos++;
+    indice++;
+    fase = "respondendo";
+    resultado = null;
+    if (indice >= palavras.length) telaEscritaFim(acertos, palavras.length, modo);
+    else desenhar();
+  }
+
+  desenhar();
+}
+
+function telaEscritaFim(acertos, total, modo) {
+  estado.tela = "escritaFim";
+  const nota = Math.round((acertos / total) * 100);
+  const emoji = nota >= 80 ? "🏆" : nota >= 50 ? "👍" : "💪";
+  const msg = modo === "ditado"
+    ? "Ouvir e escrever treina o ouvido de verdade. 👂"
+    : "Escrever fixa a grafia e a gramática. ✍️";
+  app.innerHTML = `
+    <div class="parabens">
+      <div class="emoji-grande">${emoji}</div>
+      <h2 class="titulo-tela">${acertos} de ${total} certas!</h2>
+      <p class="subtitulo">${msg}</p>
+      <button class="btn btn-primario" id="btnDeNovo">Praticar de novo</button>
+      <button class="btn btn-primario" id="btnModos" style="background:var(--verde)">Outras práticas</button>
+    </div>
+  `;
+  document.getElementById("btnDeNovo").onclick = modo === "ditado" ? telaDitado : telaEscrever;
+  document.getElementById("btnModos").onclick = telaModos;
+}
+
 /* Tela 6: revisão espaçada (as palavras "vencidas" de todos os temas) */
 function telaRevisao() {
   estado.tela = "revisao";
@@ -585,7 +726,8 @@ btnVoltar.onclick = () => {
   if (estado.tela === "idiomas") telaPerfis();
   else if (estado.tela === "categorias") telaIdiomas();
   else if (estado.tela === "modos") telaCategorias();
-  else if (["estudo", "fim", "quiz", "resultado", "fala", "falaFim"].includes(estado.tela)) telaModos();
+  else if (["estudo", "fim", "quiz", "resultado", "fala", "falaFim",
+            "ditado", "escrever", "escritaFim"].includes(estado.tela)) telaModos();
   else if (["revisao", "revisaoFim"].includes(estado.tela)) telaCategorias();
   else telaPerfis();
 };

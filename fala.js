@@ -21,45 +21,9 @@ Lingo.Fala = (function () {
   /* Estamos em https/localhost? (necessário para o microfone) */
   function contextoSeguro() { return window.isSecureContext === true; }
 
-  /* Deixa o texto "cru" para comparar: sem acento, sem pontuação,
-     tudo minúsculo. Assim "Buongiorno!" == "buongiorno". */
-  function normalizar(t) {
-    return (t || "")
-      .toLowerCase()
-      .normalize("NFD").replace(/[̀-ͯ]/g, "")
-      .replace(/[^a-z0-9\s]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  /* Distância de Levenshtein: quantas letras diferem entre dois textos. */
-  function distancia(a, b) {
-    const m = a.length, n = b.length;
-    if (!m) return n;
-    if (!n) return m;
-    let anterior = Array.from({ length: n + 1 }, (_, i) => i);
-    for (let i = 1; i <= m; i++) {
-      const atual = [i];
-      for (let j = 1; j <= n; j++) {
-        atual[j] = Math.min(
-          anterior[j] + 1,
-          atual[j - 1] + 1,
-          anterior[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-        );
-      }
-      anterior = atual;
-    }
-    return anterior[n];
-  }
-
-  /* 1 = igualzinho, 0 = totalmente diferente. */
-  function similaridade(a, b) {
-    const x = normalizar(a), y = normalizar(b);
-    if (!x && !y) return 1;
-    const maior = Math.max(x.length, y.length);
-    if (!maior) return 0;
-    return 1 - distancia(x, y) / maior;
-  }
+  /* A comparação de texto vem do módulo Lingo.Texto (texto.js) */
+  const similaridade = (a, b) => Lingo.Texto.similaridade(a, b);
+  const normalizar = (t) => Lingo.Texto.normalizar(t);
 
   /* Compara o que era esperado com o que o navegador ouviu.
      O navegador manda várias alternativas; ficamos com a melhor. */

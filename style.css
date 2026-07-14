@@ -247,6 +247,23 @@ main {
   font-style: italic;
 }
 
+/* ===== Campo de resposta (ditado e escrita) ===== */
+.campo-resposta {
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 16px;
+  font-size: 1.3rem;
+  font-family: inherit;
+  text-align: center;
+  color: var(--texto);
+  background: var(--fundo);
+  border: 2px solid var(--borda);
+  border-radius: 12px;
+  outline: none;
+}
+.campo-resposta:focus { border-color: var(--azul); background: #fff; }
+.campo-resposta:disabled { opacity: 0.9; }
+
 /* Caixa de aviso */
 .aviso {
   background: #fff8e8;
