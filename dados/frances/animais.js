@@ -7,7 +7,7 @@ Lingo.registrar("frances", "Animais", [
   { pt: "Vaca", tr: "Vache" },
   { pt: "Porco", tr: "Cochon" },
   { pt: "Galinha", tr: "Poule" },
-  { pt: "Rato", tr: "Souris" },
+  { pt: "Rato", tr: "Rat" },
   { pt: "Coelho", tr: "Lapin" },
   { pt: "Urso", tr: "Ours" },
 ]);

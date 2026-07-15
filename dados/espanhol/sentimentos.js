@@ -8,6 +8,6 @@ Lingo.registrar("espanhol", "Sentimentos", [
   { pt: "Nervoso", tr: "Nervioso" },
   { pt: "Calmo", tr: "Tranquilo" },
   { pt: "Sozinho", tr: "Solo" },
-  { pt: "Com medo", tr: "Asustado" },
+  { pt: "Com medo", tr: "Tener miedo" },
   { pt: "Apaixonado", tr: "Enamorado" },
 ]);

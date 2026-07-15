@@ -7,7 +7,7 @@ Lingo.registrar("frances", "Verbos 2", [
   { pt: "Morar", tr: "Habiter" },
   { pt: "Trabalhar", tr: "Travailler" },
   { pt: "Estudar", tr: "Étudier" },
-  { pt: "Gostar", tr: "Aimer" },
-  { pt: "Precisar", tr: "Avoir besoin" },
+  { pt: "Eu gosto de", tr: "J'aime" },
+  { pt: "Precisar de", tr: "Avoir besoin de" },
   { pt: "Comprar", tr: "Acheter" },
 ]);

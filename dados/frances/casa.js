@@ -8,6 +8,6 @@ Lingo.registrar("frances", "Casa", [
   { pt: "Cama", tr: "Lit" },
   { pt: "Cozinha", tr: "Cuisine" },
   { pt: "Quarto", tr: "Chambre" },
-  { pt: "Banheiro", tr: "Salle de bain" },
+  { pt: "Banheiro", tr: "Salle de bains" },
   { pt: "Chave", tr: "Clé" },
 ]);

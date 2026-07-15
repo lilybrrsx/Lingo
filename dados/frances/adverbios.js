@@ -1,4 +1,7 @@
 // Francês → Advérbios comuns. Aparecem em quase toda frase.
+// ⚠️ "Jamais" sozinho quer dizer "alguma vez". Para dizer NUNCA é preciso
+//    a negação dupla: "je ne vais JAMAIS".
+//    Isso será explicado na lição de gramática sobre negação.
 Lingo.registrar("frances", "Advérbios", [
   { pt: "Muito", tr: "Très" },
   { pt: "Pouco", tr: "Peu" },

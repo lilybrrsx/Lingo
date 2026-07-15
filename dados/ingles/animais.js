@@ -7,7 +7,7 @@ Lingo.registrar("ingles", "Animais", [
   { pt: "Vaca", tr: "Cow" },
   { pt: "Porco", tr: "Pig" },
   { pt: "Galinha", tr: "Chicken" },
-  { pt: "Rato", tr: "Mouse" },
+  { pt: "Rato", tr: "Rat" },
   { pt: "Coelho", tr: "Rabbit" },
   { pt: "Urso", tr: "Bear" },
 ]);

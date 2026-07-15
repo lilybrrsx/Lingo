@@ -13,9 +13,12 @@ Lingo.registrarGramatica("ingles", "Artigos", {
 
     <p><strong>A regra do a/an é pelo SOM, não pela letra:</strong></p>
     <ul>
-      <li><em>an <strong>h</strong>our</em> — o "h" é mudo, o som é de vogal → <strong>an</strong></li>
-      <li><em>a <strong>u</strong>niversity</em> — soa "iuniversity", som de "i" → <strong>a</strong></li>
+      <li><em>an <strong>h</strong>our</em> — o "h" é mudo, começa com som de vogal ("áuer") → <strong>an</strong></li>
+      <li><em>a <strong>u</strong>niversity</em> — soa "iúniversity". Esse "i" aqui é o mesmo
+          som do "i" de <em>iate</em>: funciona como <strong>consoante</strong>, não como vogal → <strong>a</strong></li>
     </ul>
+    <p>💡 Por isso a letra engana: <em>hour</em> começa com consoante mas leva <strong>an</strong>,
+    e <em>university</em> começa com vogal mas leva <strong>a</strong>. Vale sempre o som.</p>
 
     <p>💡 <strong>the</strong> serve para singular e plural, masculino e feminino.
     Uma palavra só para "o, a, os, as".</p>

@@ -1,7 +1,7 @@
 // Inglês → Advérbios comuns. Aparecem em quase toda frase.
 Lingo.registrar("ingles", "Advérbios", [
   { pt: "Muito", tr: "Very" },
-  { pt: "Pouco", tr: "Little" },
+  { pt: "Pouco", tr: "A little" },
   { pt: "Sempre", tr: "Always" },
   { pt: "Nunca", tr: "Never" },
   { pt: "Agora", tr: "Now" },

@@ -1,5 +1,7 @@
 // Inglês → Leitura A1: o café da manhã
 // Reaproveita o vocabulário de Comida, Família e Verbos.
+// O texto é em 1ª pessoa e não diz o gênero de quem narra — por isso as
+// perguntas falam em "a pessoa", nunca "ela".
 Lingo.registrarLeitura("ingles", "Breakfast", {
   texto: `In the morning I drink coffee with milk.
 I eat bread with cheese.
@@ -12,9 +14,9 @@ Meu irmão bebe água e come uma maçã.
 Minha mãe só bebe café.
 Nós comemos juntos na cozinha.`,
   perguntas: [
-    { pergunta: "O que ela bebe de manhã?", opcoes: ["Coffee with milk", "Water", "Tea"],       resposta: "Coffee with milk" },
-    { pergunta: "O que o irmão come?",      opcoes: ["An apple", "Bread", "Cheese"],            resposta: "An apple" },
-    { pergunta: "O que a mãe faz?",         opcoes: ["Only drinks coffee", "Eats bread", "Drinks water"], resposta: "Only drinks coffee" },
-    { pergunta: "Onde eles comem?",         opcoes: ["In the kitchen", "In the garden", "In the car"], resposta: "In the kitchen" },
+    { pergunta: "O que a pessoa bebe de manhã?", opcoes: ["Coffee with milk", "Water", "Tea"],       resposta: "Coffee with milk" },
+    { pergunta: "O que o irmão come?",           opcoes: ["An apple", "Bread", "Cheese"],            resposta: "An apple" },
+    { pergunta: "O que a mãe faz?",              opcoes: ["Only drinks coffee", "Eats bread", "Drinks water"], resposta: "Only drinks coffee" },
+    { pergunta: "Onde eles comem?",              opcoes: ["In the kitchen", "In the garden", "In the car"], resposta: "In the kitchen" },
   ],
 });

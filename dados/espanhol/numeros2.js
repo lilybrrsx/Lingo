@@ -3,6 +3,7 @@ Lingo.registrar("espanhol", "Números 11+", [
   { pt: "Onze", tr: "Once" },
   { pt: "Doze", tr: "Doce" },
   { pt: "Treze", tr: "Trece" },
+  { pt: "Catorze", tr: "Catorce" },
   { pt: "Quinze", tr: "Quince" },
   { pt: "Vinte", tr: "Veinte" },
   { pt: "Trinta", tr: "Treinta" },

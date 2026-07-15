@@ -3,6 +3,7 @@ Lingo.registrar("ingles", "Números 11+", [
   { pt: "Onze", tr: "Eleven" },
   { pt: "Doze", tr: "Twelve" },
   { pt: "Treze", tr: "Thirteen" },
+  { pt: "Catorze", tr: "Fourteen" },
   { pt: "Quinze", tr: "Fifteen" },
   { pt: "Vinte", tr: "Twenty" },
   { pt: "Trinta", tr: "Thirty" },

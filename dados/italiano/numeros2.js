@@ -3,6 +3,7 @@ Lingo.registrar("italiano", "Números 11+", [
   { pt: "Onze", tr: "Undici" },
   { pt: "Doze", tr: "Dodici" },
   { pt: "Treze", tr: "Tredici" },
+  { pt: "Catorze", tr: "Quattordici" },
   { pt: "Quinze", tr: "Quindici" },
   { pt: "Vinte", tr: "Venti" },
   { pt: "Trinta", tr: "Trenta" },

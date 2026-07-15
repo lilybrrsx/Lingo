@@ -488,6 +488,7 @@ function telaFalaFim(acertos, total) {
 function telaLeitura() {
   estado.tela = "leitura";
   btnVoltar.hidden = false;
+  traducaoVisivel = false;   // todo texto começa com a tradução escondida
   mostrarCarregando();
   Lingo.carregarCategoria(estado.idioma, estado.categoria, mostrarTexto, mostrarErroCarregar);
 }

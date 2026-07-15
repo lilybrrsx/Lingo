@@ -7,7 +7,7 @@ Lingo.registrar("ingles", "Verbos 2", [
   { pt: "Morar", tr: "To live" },
   { pt: "Trabalhar", tr: "To work" },
   { pt: "Estudar", tr: "To study" },
-  { pt: "Gostar", tr: "To like" },
-  { pt: "Precisar", tr: "To need" },
+  { pt: "Eu gosto de", tr: "I like" },
+  { pt: "Precisar de", tr: "To need" },
   { pt: "Comprar", tr: "To buy" },
 ]);

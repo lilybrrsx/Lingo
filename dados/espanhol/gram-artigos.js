@@ -30,6 +30,9 @@ Lingo.registrarGramatica("espanhol", "Artigos", {
     usam <strong>el</strong> no singular (só por causa do som):
     <em><strong>el</strong> agua</em>, <em><strong>el</strong> águila</em> —
     mas no plural voltam ao normal: <em><strong>las</strong> aguas</em>.</p>
+    <p>O mesmo vale para o indefinido: <em><strong>un</strong> agua</em>,
+    <em><strong>un</strong> águila</em>. Repare que a palavra continua feminina —
+    diz-se <em>el agua <strong>fría</strong></em>, e não "frío".</p>
   `,
   exercicios: [
     { pt: "O livro está na mesa",    frase: "___ libro está en la mesa", resposta: "El",  opcoes: ["El", "La", "Los"] },

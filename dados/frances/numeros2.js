@@ -3,6 +3,7 @@ Lingo.registrar("frances", "Números 11+", [
   { pt: "Onze", tr: "Onze" },
   { pt: "Doze", tr: "Douze" },
   { pt: "Treze", tr: "Treize" },
+  { pt: "Catorze", tr: "Quatorze" },
   { pt: "Quinze", tr: "Quinze" },
   { pt: "Vinte", tr: "Vingt" },
   { pt: "Trinta", tr: "Trente" },

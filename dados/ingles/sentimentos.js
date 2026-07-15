@@ -8,6 +8,6 @@ Lingo.registrar("ingles", "Sentimentos", [
   { pt: "Nervoso", tr: "Nervous" },
   { pt: "Calmo", tr: "Calm" },
   { pt: "Sozinho", tr: "Alone" },
-  { pt: "Com medo", tr: "Afraid" },
+  { pt: "Com medo", tr: "To be afraid" },
   { pt: "Apaixonado", tr: "In love" },
 ]);
